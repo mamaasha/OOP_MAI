@@ -1,27 +1,62 @@
 #include <iostream>
 #include <string>
-
-#include "lib.h"
+#include "Thirteen.h"
 
 using namespace std;
-                                                                                                                   
 
-int main(){
-    int hour, minute;
-    string period;
+int main() {
+    try {
+        string val1, val2;
+        cout << "Enter first number: ";
+        cin >> val1;
+        cout << "Enter second number: ";
+        cin >> val2;
 
-    cout << "Enter hour(1 - 12): ";
-    cin >> hour;
+        Thirteen num1(val1);
+        Thirteen num2(val2);
 
-    cout << "Enter minute(0 - 59): ";
-    cin >> minute; 
+        char operation;
+        cout << "What operation do you want to perform: ";
+        cin >> operation;
 
-    cout << "Enter period(am/pm): ";
-    cin >> period; 
+        switch (operation) {
+        case '+':
+            cout << "Result: " << num1 + num2 << endl;
+            break;
 
-    string ConvertTime = ConvertTo24h(hour, minute, period);
+        case '-':
+            cout << "Result: " << num1 - num2 << endl;
+            break;
 
-    cout << "Convert to 24-hour format time: " <<  ConvertTime << endl;
-    
+        case '>':
+            if (num1 > num2)
+                cout << "The first number is greater" << endl;
+            else
+                cout << "The second number is greater or they are equal" << endl;
+            break;
+
+        case '<':
+            if (num1 < num2)
+                cout << "The first number is smaller" << endl;
+            else
+                cout << "The second number is smaller or they are equal" << endl;
+            break;
+
+        case '=':
+            if (num1 == num2)
+                cout << "The numbers are equal" << endl;
+            else
+                cout << "The numbers are not equal" << endl;
+            break;
+
+        default:
+            cout << "No such operation" << endl;
+            break;
+        }
+    }
+    catch (const invalid_argument& ex) {
+        cout << "Invalid argument exception caught: " << ex.what() << endl;
+    }
+
     return 0;
 }

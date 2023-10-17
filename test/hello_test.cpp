@@ -1,83 +1,101 @@
-#include <gtest/gtest.h>
-#include "lib.h"
-#include <string>
-#include <iostream>
+#include "gtest/gtest.h"
+#include "Thirteen.h"
 
-using namespace std;
+TEST(ThirteenTest1, Constructor) {
+    Thirteen first("123");
 
-TEST(ExampleOfStandartUsageTest1, BasicAssertions){
-  // arrange 
-  int hour = 2;
-  int minute = 5;
-  string period = "pm";
-  // act
-  string result = ConvertTo24h(hour, minute, period);
-  // assert
-  EXPECT_EQ(result, "1405");
+    EXPECT_EQ(first.getDigitAt(0), 1);
+    EXPECT_EQ(first.getDigitAt(1), 2);
+    EXPECT_EQ(first.getDigitAt(2), 3);
 }
 
-TEST(ExampleOfStandartUsageTest2, BasicAssertions){
-  // arrange 
-  int hour = 12;
-  int minute = 45;
-  string period = "pm";
-  // act
-  string result = ConvertTo24h(hour, minute, period);
-  // assert
-  EXPECT_EQ(result, "0045");
+TEST(ThirteenTest2, Addition) {
+    Thirteen first("5");
+    Thirteen second("8");
+
+    Thirteen sum = first + second;
+
+    ASSERT_EQ(sum.getSize(), 2);
+    EXPECT_EQ(sum.getDigitAt(0), 0);
+    EXPECT_EQ(sum.getDigitAt(1), 1);
 }
 
-TEST(ExampleOfStandartUsageTest3, BasicAssertions){
-  // arrange 
-  int hour = 12;
-  int minute = 45;
-  string period = "am"; 
-  // act
-  string result = ConvertTo24h(hour, minute, period);
-  // assert
-  EXPECT_EQ(result, "1245");
+TEST(ThirteenTest3, Addition) {
+    Thirteen first("123");
+    Thirteen second("321");
+
+    Thirteen sum = first + second;
+
+    ASSERT_EQ(sum.getSize(), 3);
+    EXPECT_EQ(sum.getDigitAt(0), 4);
+    EXPECT_EQ(sum.getDigitAt(1), 4);
+    EXPECT_EQ(sum.getDigitAt(2), 4);
 }
 
-TEST(ExampleOfStandartUsageTest4, BasicAssertions){
-  // arrange 
-  int hour = 2;
-  int minute = 5;
-  string period = "am";
-  // act
-  string result = ConvertTo24h(hour, minute, period);
-  // assert
-  EXPECT_EQ(result, "0205");
+TEST(ThirteenTest4, Equfirstlity) {
+    Thirteen first("123");
+    Thirteen second("123");
+
+    ASSERT_TRUE(first == second);
 }
 
-TEST(ValidateInputTest1, InvalidHour) {
-  // arrange
-  int hour = 0;
-  int minute = 30;
-  string period = "am";
-  // act & assert
-  EXPECT_THROW(ValidateInput(hour, minute, period), std::out_of_range);
+TEST(ThirteenTest6, Assignment) {
+    Thirteen first("123");
+    Thirteen second;
+
+    second = first;
+
+    ASSERT_EQ(second.getSize(), 3);
+    EXPECT_EQ(second.getDigitAt(0), 1);
+    EXPECT_EQ(second.getDigitAt(1), 2);
+    EXPECT_EQ(second.getDigitAt(2), 3);
+    EXPECT_TRUE(first == second); // Проверка на равенство
 }
-TEST(ValidateInputTest2, InvalidPeriod) {
-  // arrange
-  int hour = 1;
-  int minute = 30;
-  string period = "pupupu";
-  // act & assert
-  EXPECT_THROW(ValidateInput(hour, minute, period), std::invalid_argument);
+
+TEST(ThirteenTest7, Operfirsttor) {
+    Thirteen first("321");
+    Thirteen second("123");
+
+    ASSERT_TRUE(first > second);
 }
-TEST(ValidateInputTest3, InvalidMinute) {
-  // arrange
-  int hour = 5;
-  int minute = -1;
-  string period = "am";
-  // act & assert
-  EXPECT_THROW(ValidateInput(hour, minute, period), std::out_of_range);
+
+TEST(ThirteenTest9, Sum) {
+    Thirteen first("5");
+    Thirteen second("A");
+
+    Thirteen sum = first + second;
+
+    ASSERT_EQ(sum.getSize(), 2);
+    EXPECT_EQ(sum.getDigitAt(0), 2);
+    EXPECT_EQ(sum.getDigitAt(1), 1);
 }
-TEST(ValidateInputTest4, ValidInput) {
-  // arrange
-  int hour = 5;
-  int minute = 5;
-  string period = "am";
-  // act & assert
-  EXPECT_NO_THROW(ValidateInput(hour, minute, period));
+
+TEST(ThirteenTest10, Sum) {
+    Thirteen first("55");
+    Thirteen second("A");
+
+    Thirteen sum = first + second;
+
+    ASSERT_EQ(sum.getSize(), 2);
+    EXPECT_EQ(sum.getDigitAt(0), 2);
+    EXPECT_EQ(sum.getDigitAt(1), 6);
 }
+
+// TEST(ThirteenTest11, Diff1) {
+//     Thirteen first("123");
+//     Thirteen second("321");
+
+//     EXPECT_THROW(first - second, std::invalid_argument);
+// }
+
+// TEST(ThirteenTest12, Diff2) {
+//     Thirteen first("321");
+//     Thirteen second("123");
+
+//     Thirteen diff = first - second;
+
+//     ASSERT_EQ(diff.getSize(), 3);
+//     EXPECT_EQ(diff.getDigitAt(0), 'B');
+//     EXPECT_EQ(diff.getDigitAt(1), 0);
+//     EXPECT_EQ(diff.getDigitAt(2), 2);
+// }
