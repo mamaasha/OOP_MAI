@@ -1,62 +1,64 @@
 #include <iostream>
-#include <string>
-#include "Thirteen.h"
+#include <vector>
 
-using namespace std;
+// #include "array.hpp"
+#include "Triangle.hpp"
+// #include "Square.hpp"
+// #include "Rectangle.hpp"
 
 int main() {
-    try {
-        string val1, val2;
-        cout << "Enter first number: ";
-        cin >> val1;
-        cout << "Enter second number: ";
-        cin >> val2;
+    // FigureArray array;
 
-        Thirteen num1(val1);
-        Thirteen num2(val2);
+    Triangle t;
+    std::cin >> t;
 
-        char operation;
-        cout << "What operation do you want to perform: ";
-        cin >> operation;
+    std::cout << t.getArea() << std::endl;
 
-        switch (operation) {
-        case '+':
-            cout << "Result: " << num1 + num2 << endl;
-            break;
 
-        case '-':
-            cout << "Result: " << num1 - num2 << endl;
-            break;
+//     for (int i = 0; i < n; ++i) {
+//         std::cout << "Enter the type of figure (0 - Triangle, 1 - Square, 2 - Rectangle): ";
+//         int type;
+//         std::cin >> type;
 
-        case '>':
-            if (num1 > num2)
-                cout << "The first number is greater" << endl;
-            else
-                cout << "The second number is greater or they are equal" << endl;
-            break;
+//         switch (type) {
+//             case 0: {
+//                 std::cout << "Enter the vertices of the triangle: ";
+//                 Triangle* triangle = new Triangle();
+//                 std::cin >> *triangle;
+//                 array.addFigure(triangle);
+//                 break;
+//             }
+//             case 1: {
+//                 std::cout << "Enter the vertices of the square: ";
+//                 Square* square = new Square();
+//                 std::cin >> *square;
+//                 array.addFigure(square);
+//                 break;
+//             }
+//             case 2: {
+//                 std::cout << "Enter the vertices of the rectangle: ";
+//                 Rectangle* rectangle = new Rectangle();
+//                 std::cin >> *rectangle;
+//                 array.addFigure(rectangle);
+//                 break;
+//             }
+//             default:
+//                 std::cout << "Invalid figure type!" << std::endl;
+//                 break;
+//         }
+//     }
 
-        case '<':
-            if (num1 < num2)
-                cout << "The first number is smaller" << endl;
-            else
-                cout << "The second number is smaller or they are equal" << endl;
-            break;
+//     array.printCenters();
+//     std::cout << "Total area: " << array.getTotalArea() << std::endl;
 
-        case '=':
-            if (num1 == num2)
-                cout << "The numbers are equal" << endl;
-            else
-                cout << "The numbers are not equal" << endl;
-            break;
+//     std::cout << "Enter the index of the figure to delete: ";
+//     int index;
+//     std::cin >> index;
 
-        default:
-            cout << "No such operation" << endl;
-            break;
-        }
-    }
-    catch (const invalid_argument& ex) {
-        cout << "Invalid argument exception caught: " << ex.what() << endl;
-    }
+//     array.deleteFigure(index);
+
+//     array.printCenters();
+//     std::cout << "Total area: " << array.getTotalArea() << std::endl;
 
     return 0;
 }

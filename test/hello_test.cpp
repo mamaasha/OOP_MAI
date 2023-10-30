@@ -1,101 +1,158 @@
-#include "gtest/gtest.h"
-#include "Thirteen.h"
+#include <gtest/gtest.h>
+#include "Triangle.hpp"
+#include "Rectangle.hpp"
+#include "Square.hpp"
+#include <cmath> 
 
-TEST(ThirteenTest1, Constructor) {
-    Thirteen first("123");
+TEST(TriangleTest1, GetArea) {
+  Point A(0.0, 0.0);
+  Point B(3.0, 4.0);
+  Point C(6.0, 0.0);
+  Triangle triangle(A, B, C);
 
-    EXPECT_EQ(first.getDigitAt(0), 1);
-    EXPECT_EQ(first.getDigitAt(1), 2);
-    EXPECT_EQ(first.getDigitAt(2), 3);
+  double expected_area = 12.0;
+  double actual_area = triangle.getArea();
+
+  EXPECT_NEAR(expected_area, actual_area, 0.0001); 
 }
 
-TEST(ThirteenTest2, Addition) {
-    Thirteen first("5");
-    Thirteen second("8");
 
-    Thirteen sum = first + second;
+TEST(TriangleTest3, GetCenter) { //робит
+  Point A(0.0, 0.0);
+  Point B(3.0, 4.0);
+  Point C(6.0, 0.0);
+  Triangle triangle(A, B, C);
 
-    ASSERT_EQ(sum.getSize(), 2);
-    EXPECT_EQ(sum.getDigitAt(0), 0);
-    EXPECT_EQ(sum.getDigitAt(1), 1);
+  std::pair<double, double> expected_center(3.0, 1.333333);
+  std::pair<double, double> actual_center = triangle.getCenter();
+
+  EXPECT_NEAR(expected_center.first, actual_center.first, 0.0001);
+  EXPECT_NEAR(expected_center.second, actual_center.second, 0.0001);
 }
 
-TEST(ThirteenTest3, Addition) {
-    Thirteen first("123");
-    Thirteen second("321");
 
-    Thirteen sum = first + second;
+TEST(TriangleTest4, WriteTriangleVerticesToStream) {
+    std::ostringstream oss;
 
-    ASSERT_EQ(sum.getSize(), 3);
-    EXPECT_EQ(sum.getDigitAt(0), 4);
-    EXPECT_EQ(sum.getDigitAt(1), 4);
-    EXPECT_EQ(sum.getDigitAt(2), 4);
+    Point a(0.0, 0.0);
+    Point b(1.0, 0.0);
+    Point c(0.0, 1.0);
+
+    Triangle triangle(a, b, c);
+    triangle.printVertices(oss);
+
+    std::string expectedOutput = "(0,0) (1,0) (0,1)";
+
+    EXPECT_EQ(expectedOutput, oss.str());
 }
 
-TEST(ThirteenTest4, Equfirstlity) {
-    Thirteen first("123");
-    Thirteen second("123");
+TEST(RectangleTest5, CalculateRectangleArea) {
+    Point a(0.0, 0.0);
+    Point b(1.0, 0.0);
+    Point c(1.0, 2.0);
+    Point d(0.0, 2.0);
 
-    ASSERT_TRUE(first == second);
+    Rectangle rectangle(a, b, c, d);
+
+    double expectedArea = 2;
+
+    EXPECT_NEAR(expectedArea, rectangle.getArea(), 0.0001);
 }
 
-TEST(ThirteenTest6, Assignment) {
-    Thirteen first("123");
-    Thirteen second;
+TEST(RectangleTest6, CalculateRectangleCenter) {
+    Point a(0.0, 0.0);
+    Point b(1.0, 0.0);
+    Point c(1.0, 1.0);
+    Point d(0.0, 1.0);
 
-    second = first;
+    Rectangle rectangle(a, b, c, d);
 
-    ASSERT_EQ(second.getSize(), 3);
-    EXPECT_EQ(second.getDigitAt(0), 1);
-    EXPECT_EQ(second.getDigitAt(1), 2);
-    EXPECT_EQ(second.getDigitAt(2), 3);
-    EXPECT_TRUE(first == second); // Проверка на равенство
+    double expectedCenterX = 0.5;
+    double expectedCenterY = 0.5;
+
+    EXPECT_NEAR(expectedCenterX, rectangle.getCenter().first, 0.0001);
+    EXPECT_NEAR(expectedCenterY, rectangle.getCenter().second, 0.0001);
 }
 
-TEST(ThirteenTest7, Operfirsttor) {
-    Thirteen first("321");
-    Thirteen second("123");
+TEST(RectangleTest7, WriteRectangleVerticesToStream) {
+    std::ostringstream oss;
 
-    ASSERT_TRUE(first > second);
+    Point a(0.0, 0.0);
+    Point b(1.0, 0.0);
+    Point c(1.0, 1.0);
+    Point d(0.0, 1.0);
+
+    Rectangle rectangle(a, b, c, d);
+    rectangle.printVertices(oss);
+
+    std::string expectedOutput = "(0,0) (1,0) (1,1) (0,1)";
+
+    EXPECT_EQ(expectedOutput, oss.str());
 }
 
-TEST(ThirteenTest9, Sum) {
-    Thirteen first("5");
-    Thirteen second("A");
+TEST(RectangleTest8, CalculateRectangleArea) {
+    Point a(0.0, 0.0);
+    Point b(1.0, 0.0);
+    Point c(1.0, 2.0);
+    Point d(0.0, 2.0);
 
-    Thirteen sum = first + second;
+    Rectangle rectangle(a, b, c, d);
 
-    ASSERT_EQ(sum.getSize(), 2);
-    EXPECT_EQ(sum.getDigitAt(0), 2);
-    EXPECT_EQ(sum.getDigitAt(1), 1);
+    double expectedArea = 2;
+
+    EXPECT_EQ(expectedArea, rectangle.getArea());
 }
 
-TEST(ThirteenTest10, Sum) {
-    Thirteen first("55");
-    Thirteen second("A");
+TEST(TriangleTest9, NotEqualOperator) {
+  Point A(0.0, 0.0);
+  Point B(3.0, 4.0);
+  Point C(6.0, 0.0);
+  Triangle triangle1(A, B, C);
+  Triangle triangle2(A, B, C);
 
-    Thirteen sum = first + second;
-
-    ASSERT_EQ(sum.getSize(), 2);
-    EXPECT_EQ(sum.getDigitAt(0), 2);
-    EXPECT_EQ(sum.getDigitAt(1), 6);
+  EXPECT_FALSE(triangle1 != triangle2);
 }
 
-// TEST(ThirteenTest11, Diff1) {
-//     Thirteen first("123");
-//     Thirteen second("321");
+TEST(TriangleTest10, NotEqualOperator_DifferentTriangles) {
+  Point A1(0.0, 0.0);
+  Point B1(3.0, 4.0);
+  Point C1(6.0, 0.0);
+  Triangle triangle1(A1, B1, C1);
 
-//     EXPECT_THROW(first - second, std::invalid_argument);
-// }
+  Point A2(0.0, 0.0);
+  Point B2(3.0, 2.0);
+  Point C2(6.0, 0.0);
+  Triangle triangle2(A2, B2, C2);
 
-// TEST(ThirteenTest12, Diff2) {
-//     Thirteen first("321");
-//     Thirteen second("123");
+  EXPECT_TRUE(triangle1 != triangle2);
+}
 
-//     Thirteen diff = first - second;
+TEST(SquareTest11, CalculateSquareCenter) {
+    Point a(0.0, 0.0);
+    Point b(1.0, 0.0);
+    Point c(1.0, 1.0);
+    Point d(0.0, 1.0);
 
-//     ASSERT_EQ(diff.getSize(), 3);
-//     EXPECT_EQ(diff.getDigitAt(0), 'B');
-//     EXPECT_EQ(diff.getDigitAt(1), 0);
-//     EXPECT_EQ(diff.getDigitAt(2), 2);
-// }
+    Square square(a, b, c, d);
+
+    double expectedCenterX = 0.5;
+    double expectedCenterY = 0.5;
+
+    EXPECT_NEAR(expectedCenterX, square.getCenter().first, 0.0001);
+    EXPECT_NEAR(expectedCenterY, square.getCenter().second, 0.0001);
+}
+
+TEST(SquareTest11, CalculateSquareArea) {
+    Point a(0.0, 0.0);
+    Point b(1.0, 0.0);
+    Point c(1.0, 2.0);
+    Point d(0.0, 2.0);
+
+    Square square(a, b, c, d);
+
+    double expectedArea = 2;
+    double area = square.getArea();
+
+    EXPECT_EQ(expectedArea, area);
+}
+

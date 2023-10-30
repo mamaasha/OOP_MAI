@@ -14,3 +14,6 @@ test:
 
 clean-build:
 	rm -rf ./build/
+
+set-executable-permission:
+	chmod +x ./build/*_test
