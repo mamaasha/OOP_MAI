@@ -1,23 +1,26 @@
 #pragma once
 
-#include <iostream>
 // #include "ValidatorPoints.hpp"
+#include <iostream>
+#include <cmath>
 
+template <typename T>
 class Point {
 public:
     Point();
     Point(std::istream& is);
-    Point(double x, double y);
+    Point(T x, T y);
+
     bool operator!=(const Point& other) const;
     bool operator==(const Point& other) const;
 
-    double distance(const Point& other)const;
-    double getX() const;
-    double getY() const;
+    T distance(const Point& other)const;
+    T getX() const;
+    T getY() const;
 
     friend std::istream& operator>>(std::istream& is, Point& p);
-    friend std::ostream& operator<<(std::ostream& os, const Point& p);
+    friend std::ostream& operator<<(std::ostream& os, const Point<T>& p);
 
 private:
-    double x_, y_;
+    T x_, y_;
 };

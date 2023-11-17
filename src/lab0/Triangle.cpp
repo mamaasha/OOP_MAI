@@ -6,7 +6,7 @@
 #include "Validator.hpp"
 // Triangle::Triangle() : A(0.0, 0.0), B(0.0, 0.0), C(0.0, 0.0) {}
 
-Triangle::Triangle(Point& a, Point& b, Point& c) : A(a), B(b), C(c) {
+Triangle::Triangle(Point a, Point b, Point c) : A(a), B(b), C(c) {
     // Validator::validateTriangle(A, B, C);
 }
 

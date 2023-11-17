@@ -44,8 +44,6 @@ bool FigureArray::operator==(const FigureArray& other)const {
 FigureArray::~FigureArray() {
     for(auto figure : figures_)
         delete figure;
-
-    // delete[] figures_;
 }
 
 void FigureArray::addFigure(Figure* figure) {

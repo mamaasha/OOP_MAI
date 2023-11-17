@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "point.hpp"
+#include "Vector.hpp"
 // #include "Validator.hpp"
 
 class Figure {
@@ -16,7 +17,7 @@ public:
     virtual void printVertices(std::ostream& os)const = 0;
     virtual void readVertices(std::istream& is) = 0;
 
-    virtual Figure* clone()const = 0;
+    virtual std::unique_ptr<Figure> clone() const = 0;
     virtual bool operator!=(const Figure& other)const {
         return !(this == &other); ////дописать, если разная ссылка
     };
