@@ -1,158 +1,47 @@
-#include <gtest/gtest.h>
-#include "Triangle.hpp"
-#include "Rectangle.hpp"
-#include "Square.hpp"
-#include <cmath> 
+#include "gtest/gtest.h"
+#include "Queue.h"
+#include "factorial.h"
+#include <map>
 
-TEST(TriangleTest1, GetArea) {
-  Point A(0.0, 0.0);
-  Point B(3.0, 4.0);
-  Point C(6.0, 0.0);
-  Triangle triangle(A, B, C);
-
-  double expected_area = 12.0;
-  double actual_area = triangle.getArea();
-
-  EXPECT_NEAR(expected_area, actual_area, 0.0001); 
+int factorial(int n) {
+    return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }
 
-
-TEST(TriangleTest3, GetCenter) { //робит
-  Point A(0.0, 0.0);
-  Point B(3.0, 4.0);
-  Point C(6.0, 0.0);
-  Triangle triangle(A, B, C);
-
-  std::pair<double, double> expected_center(3.0, 1.333333);
-  std::pair<double, double> actual_center = triangle.getCenter();
-
-  EXPECT_NEAR(expected_center.first, actual_center.first, 0.0001);
-  EXPECT_NEAR(expected_center.second, actual_center.second, 0.0001);
+TEST(MyQueueTest, PushAndPop) {
+    MyQueue<int, 5, MyAllocator<int, 5>> myQueue;
+    myQueue.push(10);
+    myQueue.push(20);
+    myQueue.pop();
+    EXPECT_EQ(myQueue.front(), 20);
 }
 
-
-TEST(TriangleTest4, WriteTriangleVerticesToStream) {
-    std::ostringstream oss;
-
-    Point a(0.0, 0.0);
-    Point b(1.0, 0.0);
-    Point c(0.0, 1.0);
-
-    Triangle triangle(a, b, c);
-    triangle.printVertices(oss);
-
-    std::string expectedOutput = "(0,0) (1,0) (0,1)";
-
-    EXPECT_EQ(expectedOutput, oss.str());
+TEST(MyQueueTest, FrontAndEmpty) {
+    MyQueue<int, 5, MyAllocator<int, 5>> myQueue;
+    EXPECT_TRUE(myQueue.empty());
+    myQueue.push(10);
+    EXPECT_EQ(myQueue.front(), 10);
+    EXPECT_FALSE(myQueue.empty());
 }
 
-TEST(RectangleTest5, CalculateRectangleArea) {
-    Point a(0.0, 0.0);
-    Point b(1.0, 0.0);
-    Point c(1.0, 2.0);
-    Point d(0.0, 2.0);
-
-    Rectangle rectangle(a, b, c, d);
-
-    double expectedArea = 2;
-
-    EXPECT_NEAR(expectedArea, rectangle.getArea(), 0.0001);
+TEST(MyQueueTest, Exceptions) {
+    MyQueue<int, 2, MyAllocator<int, 2>> myQueue;
+    myQueue.push(10);
+    myQueue.push(20);
+    EXPECT_THROW(myQueue.push(30), std::out_of_range);
+    myQueue.pop();
+    myQueue.pop();
+    EXPECT_THROW(myQueue.pop(), std::out_of_range);
+    EXPECT_THROW(myQueue.front(), std::out_of_range);
 }
 
-TEST(RectangleTest6, CalculateRectangleCenter) {
-    Point a(0.0, 0.0);
-    Point b(1.0, 0.0);
-    Point c(1.0, 1.0);
-    Point d(0.0, 1.0);
-
-    Rectangle rectangle(a, b, c, d);
-
-    double expectedCenterX = 0.5;
-    double expectedCenterY = 0.5;
-
-    EXPECT_NEAR(expectedCenterX, rectangle.getCenter().first, 0.0001);
-    EXPECT_NEAR(expectedCenterY, rectangle.getCenter().second, 0.0001);
+TEST(MyMapTest, FactorialValues) {
+    std::map<int, int, std::less<int>, MyAllocator<std::pair<const int, int>, 10>> myMap;
+    for (int i = 0; i < 5; ++i) {
+        myMap[i] = factorial(i);
+    }
+    EXPECT_EQ(myMap[0], 1);
+    EXPECT_EQ(myMap[1], 1);
+    EXPECT_EQ(myMap[2], 2);
+    EXPECT_EQ(myMap[3], 6);
+    EXPECT_EQ(myMap[4], 24);
 }
-
-TEST(RectangleTest7, WriteRectangleVerticesToStream) {
-    std::ostringstream oss;
-
-    Point a(0.0, 0.0);
-    Point b(1.0, 0.0);
-    Point c(1.0, 1.0);
-    Point d(0.0, 1.0);
-
-    Rectangle rectangle(a, b, c, d);
-    rectangle.printVertices(oss);
-
-    std::string expectedOutput = "(0,0) (1,0) (1,1) (0,1)";
-
-    EXPECT_EQ(expectedOutput, oss.str());
-}
-
-TEST(RectangleTest8, CalculateRectangleArea) {
-    Point a(0.0, 0.0);
-    Point b(1.0, 0.0);
-    Point c(1.0, 2.0);
-    Point d(0.0, 2.0);
-
-    Rectangle rectangle(a, b, c, d);
-
-    double expectedArea = 2;
-
-    EXPECT_EQ(expectedArea, rectangle.getArea());
-}
-
-TEST(TriangleTest9, NotEqualOperator) {
-  Point A(0.0, 0.0);
-  Point B(3.0, 4.0);
-  Point C(6.0, 0.0);
-  Triangle triangle1(A, B, C);
-  Triangle triangle2(A, B, C);
-
-  EXPECT_FALSE(triangle1 != triangle2);
-}
-
-TEST(TriangleTest10, NotEqualOperator_DifferentTriangles) {
-  Point A1(0.0, 0.0);
-  Point B1(3.0, 4.0);
-  Point C1(6.0, 0.0);
-  Triangle triangle1(A1, B1, C1);
-
-  Point A2(0.0, 0.0);
-  Point B2(3.0, 2.0);
-  Point C2(6.0, 0.0);
-  Triangle triangle2(A2, B2, C2);
-
-  EXPECT_TRUE(triangle1 != triangle2);
-}
-
-TEST(SquareTest11, CalculateSquareCenter) {
-    Point a(0.0, 0.0);
-    Point b(1.0, 0.0);
-    Point c(1.0, 1.0);
-    Point d(0.0, 1.0);
-
-    Square square(a, b, c, d);
-
-    double expectedCenterX = 0.5;
-    double expectedCenterY = 0.5;
-
-    EXPECT_NEAR(expectedCenterX, square.getCenter().first, 0.0001);
-    EXPECT_NEAR(expectedCenterY, square.getCenter().second, 0.0001);
-}
-
-TEST(SquareTest11, CalculateSquareArea) {
-    Point a(0.0, 0.0);
-    Point b(1.0, 0.0);
-    Point c(1.0, 2.0);
-    Point d(0.0, 2.0);
-
-    Square square(a, b, c, d);
-
-    double expectedArea = 2;
-    double area = square.getArea();
-
-    EXPECT_EQ(expectedArea, area);
-}
-
