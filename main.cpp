@@ -1,36 +1,56 @@
-#include "Queue.h"
 #include <iostream>
-#include <map>
-
-int factorial(int n) {
-    return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
-}
+#include "NPCFactory.h"
+#include "NPC.h"
+#include "Battle.h"
+#include "LogObserver.h"
+#include "PrintObserver.h"
+#include "BattleVisitor.h"
 
 int main() {
-    std::map<int, int, std::less<int>, MyAllocator<std::pair<const int, int>, 10>> myMap;
+    // Создаем фабрику NPC
+    NPCFactory factory;
 
-    for (int i = 0; i < 10; ++i) {
-        myMap[i] = factorial(i);
-    }
+    // Создаем объекты NPC
+    NPC* bear = factory.createNPC("Bear", 100, 0, 0);
+    NPC* werewolf = factory.createNPC("Werewolf", 100, 100, 100);
+    NPC* thief = factory.createNPC("Thief", 100, 200, 200);
 
-    for (const auto& pair : myMap) {
-        std::cout << pair.first << " " << pair.second << std::endl;
-    }
+    // Создаем объекты наблюдатели Observer
+    LogObserver logObserver;
+    PrintObserver printObserver;
 
-    MyQueue<int, 10, MyAllocator<int, 10>> myQueue;
+    // Регистрируем Observer на NPC
+    bear->registerObserver(&logObserver);
+    bear->registerObserver(&printObserver);
+    werewolf->registerObserver(&logObserver);
+    werewolf->registerObserver(&printObserver);
+    thief->registerObserver(&logObserver);
+    thief->registerObserver(&printObserver);
 
-    for (int i = 0; i < 10; ++i) {
-        myQueue.push(i);
-    }
-    
-    while (!myQueue.empty()) {
-        if (myQueue.get_size() > 1) {
-            std::cout << myQueue.front() << " ";
-        } else {
-            std::cout << myQueue.front();
-        }
-        myQueue.pop();
-    }
+    // Создаем объект Battle
+    Battle battle;
+
+    // Добавляем NPC на поле боя
+    battle.addNPC(bear);
+    battle.addNPC(werewolf);
+    battle.addNPC(thief);
+
+    // Выводим информацию о персонажах до боя
+    std::cout << "NPCs before battle:" << std::endl;
+    battle.printNPCs();
+
+    // Запускаем боевой режим
+    BattleVisitor battleVisitor;
+    battle.startBattle(&battleVisitor);
+
+    // Выводим информацию о персонажах после боя
+    std::cout << "NPCs after battle:" << std::endl;
+    battle.printNPCs();
+
+    // Удаляем объекты NPC
+    delete bear;
+    delete werewolf;
+    delete thief;
 
     return 0;
 }

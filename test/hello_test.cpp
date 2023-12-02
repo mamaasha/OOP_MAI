@@ -1,47 +1,35 @@
-#include "gtest/gtest.h"
-#include "Queue.h"
-#include "factorial.h"
-#include <map>
+#include <gtest/gtest.h>
+#include "/mnt/c/Users/User/OOP_MAI/include/NPCFactory.h"
+#include "NPC.h"
+#include "/mnt/c/Users/User/OOP_MAI/include/Battle.h"
+#include "/mnt/c/Users/User/OOP_MAI/include/BattleVisitor.h"
 
-int factorial(int n) {
-    return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
+TEST(BattleTest, BattleWithNoNPCs) {
+    Battle battle;
+    BattleVisitor battleVisitor;
+    ASSERT_NO_THROW(battle.startBattle(&battleVisitor)); // Проверяем, что бой не вызывает исключений при отсутствии NPC
 }
 
-TEST(MyQueueTest, PushAndPop) {
-    MyQueue<int, 5, MyAllocator<int, 5>> myQueue;
-    myQueue.push(10);
-    myQueue.push(20);
-    myQueue.pop();
-    EXPECT_EQ(myQueue.front(), 20);
+TEST(BattleTest, BattleWithOneNPC) {
+    Battle battle;
+    NPCFactory factory;
+    NPC* bear = factory.createNPC("Bear", 100, 0, 0);
+    battle.addNPC(bear);
+    BattleVisitor battleVisitor;
+    ASSERT_NO_THROW(battle.startBattle(&battleVisitor)); // Проверяем, что бой не вызывает исключений при наличии только одного NPC
 }
 
-TEST(MyQueueTest, FrontAndEmpty) {
-    MyQueue<int, 5, MyAllocator<int, 5>> myQueue;
-    EXPECT_TRUE(myQueue.empty());
-    myQueue.push(10);
-    EXPECT_EQ(myQueue.front(), 10);
-    EXPECT_FALSE(myQueue.empty());
+TEST(BattleTest, CorrectNPCHealthAfterBattle) {
+    Battle battle;
+    NPCFactory factory;
+    NPC* bear = factory.createNPC("Bear", 100, 0, 0);
+    NPC* werewolf = factory.createNPC("Werewolf", 100, 100, 100);
+    battle.addNPC(bear);
+    battle.addNPC(werewolf);
+    BattleVisitor battleVisitor;
+    battle.startBattle(&battleVisitor);
+    EXPECT_GE(bear->getHealth(), 0); // Проверяем, что здоровье NPC после боя неотрицательное
+    EXPECT_GE(werewolf->getHealth(), 0); // Проверяем, что здоровье NPC после боя неотрицательное
 }
 
-TEST(MyQueueTest, Exceptions) {
-    MyQueue<int, 2, MyAllocator<int, 2>> myQueue;
-    myQueue.push(10);
-    myQueue.push(20);
-    EXPECT_THROW(myQueue.push(30), std::out_of_range);
-    myQueue.pop();
-    myQueue.pop();
-    EXPECT_THROW(myQueue.pop(), std::out_of_range);
-    EXPECT_THROW(myQueue.front(), std::out_of_range);
-}
-
-TEST(MyMapTest, FactorialValues) {
-    std::map<int, int, std::less<int>, MyAllocator<std::pair<const int, int>, 10>> myMap;
-    for (int i = 0; i < 5; ++i) {
-        myMap[i] = factorial(i);
-    }
-    EXPECT_EQ(myMap[0], 1);
-    EXPECT_EQ(myMap[1], 1);
-    EXPECT_EQ(myMap[2], 2);
-    EXPECT_EQ(myMap[3], 6);
-    EXPECT_EQ(myMap[4], 24);
-}
+// Другие тесты, проверяющие различные аспекты боя, добавления и удаления NPC и т.д.
