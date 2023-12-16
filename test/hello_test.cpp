@@ -4,19 +4,19 @@
 #include "/mnt/c/Users/User/OOP_MAI/include/Battle.h"
 #include "/mnt/c/Users/User/OOP_MAI/include/BattleVisitor.h"
 
-TEST(BattleTest, BattleWithNoNPCs) {
+TEST(BattleTest, BattleWithNoNPCs) { // нет NPC
     Battle battle;
     BattleVisitor battleVisitor;
-    ASSERT_NO_THROW(battle.startBattle(&battleVisitor)); // Проверяем, что бой не вызывает исключений при отсутствии NPC
+    ASSERT_NO_THROW(battle.startBattle(&battleVisitor));
 }
 
-TEST(BattleTest, BattleWithOneNPC) {
+TEST(BattleTest, BattleWithOneNPC) { // один NPC
     Battle battle;
     NPCFactory factory;
     NPC* bear = factory.createNPC("Bear", 100, 0, 0);
     battle.addNPC(bear);
     BattleVisitor battleVisitor;
-    ASSERT_NO_THROW(battle.startBattle(&battleVisitor)); // Проверяем, что бой не вызывает исключений при наличии только одного NPC
+    ASSERT_NO_THROW(battle.startBattle(&battleVisitor)); 
 }
 
 TEST(BattleTest, CorrectNPCHealthAfterBattle) {
@@ -28,8 +28,6 @@ TEST(BattleTest, CorrectNPCHealthAfterBattle) {
     battle.addNPC(werewolf);
     BattleVisitor battleVisitor;
     battle.startBattle(&battleVisitor);
-    EXPECT_GE(bear->getHealth(), 0); // Проверяем, что здоровье NPC после боя неотрицательное
-    EXPECT_GE(werewolf->getHealth(), 0); // Проверяем, что здоровье NPC после боя неотрицательное
+    EXPECT_GE(bear->getHealth(), 0); 
+    EXPECT_GE(werewolf->getHealth(), 0); 
 }
-
-// Другие тесты, проверяющие различные аспекты боя, добавления и удаления NPC и т.д.

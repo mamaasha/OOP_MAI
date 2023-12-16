@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include "NPC.h"
 
 class NPCFactory {

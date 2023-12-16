@@ -7,7 +7,7 @@
 
 class Visitor;
 
-class NPC { // регистрация и добавление наблюдателей
+class NPC { 
 
 public:
     NPC(const std::string& name, int health, int x, int y);
@@ -33,6 +33,6 @@ private:
     int health;
     int x;
     int y;
-    std::vector<Observer*> observers; // добавляем наблюдателей
+    std::vector<Observer*> observers; 
 };
 
